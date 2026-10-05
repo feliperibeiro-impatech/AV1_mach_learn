@@ -1,4 +1,4 @@
-# Avaliação 1 (AV1) — [Nome da Disciplina]
+# Avaliação 1 (AV1) — Machine Learning 1
 
 Este repositório contém a solução desenvolvida para a **AV1** da disciplina de **Machine Learning 1**, implementada utilizando a linguagem  **Delta**.
 

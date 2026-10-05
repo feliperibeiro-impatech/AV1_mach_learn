@@ -1,0 +1,7 @@
+inputs = ['src\capa.dlt', 'src\questao1.dlt', 'src\questao2.dlt', 'src\questao3.dlt', 'src\questao4.dlt', 'src\questao5.dlt']
+out = "questoes_html"
+
+[document]
+type = "book"
+lang = "pt-BR"
+theme-accent = "red"

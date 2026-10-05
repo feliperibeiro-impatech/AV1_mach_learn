@@ -1,0 +1,132 @@
+<document lang="pt-BR" type="article" theme-accent="red">
+
+  <title>Questão 5</title>
+  <floating>
+    <title>Navegação</title>
+    <toc scope="project" depth="1"/>
+  </floating>
+  
+  <meta>
+    <meta-item key="Autor"> Felipe Ribeiro Mendonça </meta-item>
+    <meta-item key="Instituição">IMPA Tech</meta-item>
+    <meta-item key="Período">2026.2</meta-item>
+  </meta>
+
+  <section id="sec:questao5">
+  <eyebrow> Prova AV1 - Machine Learning 1 </eyebrow>
+    <title>Questão 5</title>
+
+    <intro>
+    Considere a classe abaixo. Os métodos <c>predict</c> e <c>mse</c> ainda não foram implementados.
+    
+    
+    <code lang="python" line="false">
+      import numpy as np
+      class MeuMetodo:
+        def __init__(self, grau):
+          self.grau = grau
+          self.beta = None
+
+        def _design(self, x):
+            return np.vander(x, self.grau + 1, increasing=True)
+            
+        def train(self, x, y):
+            X = self._design(x)
+            self.beta = np.linalg.solve(X.T @ X, X.T @ y)
+            
+        def predict(self, x):
+            pass # a implementar
+            
+        def mse(self, x, y):
+            pass # a implementar
+    </code>
+    
+    Você pode usar <c>np.eye(k)</c> para a matriz identidade $k\times k$.
+    </intro>
+
+    <subsection id="questao5:item_a"> 
+      <title>Item (a)</title>
+
+      <exercise id="ex5:item_a">
+        Explique o propósito da classe e seus métodos (mesmo que ainda não estejam implementados).
+      </exercise>
+        
+      <solution of="ex5:item_a" collapsed="true">
+        A classe <c>MeuMetodo</c> destina-se a realizar Regressão Polinomial via Mínimos Quadrados.
+      
+        <list>
+          <item> 
+            <c>__init__(self, grau)</c>: Função inicial que recebe e guarda o grau do polinómio em <c>self.grau</c> e inicializa o atributo <c>self.beta</c> como <c>None</c>.
+          </item>
+          <item>  
+            <c>_design(self, x)</c>: Método privado que gera a matriz de design de Vandermonde contendo as potências do vetor $x$ de $0$ até <c>grau</c>.
+          </item>
+          <item>  
+            <c>train(self, x, y)</c>: Monta a matriz design e estima os coeficientes do polinómio resolvendo o sistema linear de equações normais $X^T X \beta = X^T y$.
+          </item>
+          <item>  
+            <c>predict(self, x)</c>: Deve gerar a matriz design para novas entradas $x$ e calcular as previsões $\hat{y} = X \beta$.
+          </item> 
+          <item> 
+            <c>mse(self, x, y)</c>: Deve calcular o Erro Quadrático Médio entre os valores reais $y$ e os valores previstos $\hat{y}$.
+          </item> 
+        </list>
+      </solution>
+    </subsection>
+
+    <subsection id="questao5:item_b"> 
+      <title>Item (b)</title>
+
+      <exercise id="ex5:item_b">
+        Implemente <c>predict(self, x)</c>.
+      </exercise>
+        
+      <solution of="ex5:item_b" collapsed="true">
+        <code lang="python">
+          def predict(self, x):
+              X = self._design(x)
+              return X @ self.beta
+          </code>
+      </solution>
+    </subsection>
+
+    <subsection id="questao5:item_c"> 
+      <title>Item (c)</title>
+
+      <exercise id="ex5:item_c">
+        Implemente <c>mse(self, x, y)</c>.
+      </exercise>
+        
+      <solution of="ex5:item_c" collapsed="true">
+        <code lang="python">
+          def mse(self, x, y):
+              y_predict = self.predict(x)
+              return np.mean((y - y_predict) ** 2)
+          </code>
+      </solution>
+    </subsection>
+
+    <subsection id="questao5:item_d"> 
+      <title>Item (d)</title>
+
+      <exercise id="ex5:item_d">
+        (*) Modifique <c>__init__</c> e <c>train</c> de modo que a classe também realize regressão Ridge com parâmetro de regularização <c>lam</c>, de forma que <c>lam = 0</c> recupere o MQO.
+      </exercise>
+        
+      <solution of="ex5:item_d" collapsed="true">
+        <code lang="python">
+          def __init__(self, grau, lam = 0.0):
+              self.grau = grau
+              self.lam = lam
+              self.beta = None
+
+          def train(self, x, y):
+              X = self._design(x)
+              penal = self.lam * np.eye(self.grau + 1)
+              self.beta = np.linalg.solve(X.T @ X + penal, X.T @ y)
+
+        </code>
+      </solution>
+    </subsection>
+  </section>
+</document>

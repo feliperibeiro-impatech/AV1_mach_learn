@@ -1,0 +1,102 @@
+<document lang="pt-BR" type="article" theme-accent="red">
+
+  <title>Questão 2</title>
+
+  <floating>
+    <title>Navegação</title>
+    <toc scope="project" depth="1"/>
+  </floating>
+  
+  <meta>
+    <meta-item key="Autor"> Felipe Ribeiro Mendonça </meta-item>
+    <meta-item key="Instituição">IMPA Tech</meta-item>
+    <meta-item key="Período">2026.2</meta-item>
+  </meta>
+
+  <section id="sec:questao2">
+    <eyebrow> Prova AV1 - Machine Learning 1 </eyebrow>
+    <title>Questão 2</title>
+
+    <intro>
+    Seja $\mathcal{T}=\{(x_{i},y_{i})\}_{i=1}^{n}$ um conjunto de treino e $\hat{f}$ um modelo ajustado a partir de $\mathcal{T}$.
+    </intro>
+
+    <subsection id="questao2:item_a"> 
+      <title>Item (a)</title>
+
+      <exercise id="ex2:item_a">
+        Suponha que $Y=f(X)+\epsilon$, com $\mathbb{E}[\epsilon]=0,$ $Var(\epsilon)=\sigma^{2}$ independente de $\mathcal{T}$. Fixe um ponto $x_{0}$ e seja $Y_{0}=f(x_{0})+\epsilon_{0}$ uma nova observação nesse ponto. Mostre que 
+
+        $$\mathbb{E}[(Y_{0}-\hat{f}(x_{0}))^{2}]=\sigma^{2}+(\mathbb{E}[\hat{f}(x_{0})]-f(x_{0}))^{2}+Var(\hat{f}(x_{0})),$$ 
+        
+        onde a esperança e a variância são tomadas sobre a aleatoriedade de  $\mathcal{T}$ e de $\epsilon_{0}$. Identifique o que representa cada um dos três termos.
+      </exercise>
+        
+      <solution of="ex2:item_a" collapsed="true">
+        Substituindo $Y_0 = f(x_0) + \epsilon_0$ na expressão do erro quadrático:
+      $$\mathbb{E}[(Y_0 - \hat{f}(x_0))^2] = \mathbb{E}[(f(x_0) + \epsilon_0 - \hat{f}(x_0))^2] = \mathbb{E}[((f(x_0) - \hat{f}(x_0)) + \epsilon_0)^2]$$
+      
+      Expandindo o quadrado:
+      $$\mathbb{E}[(Y_0 - \hat{f}(x_0))^2] = \mathbb{E}[(f(x_0) - \hat{f}(x_0))^2] + 2\mathbb{E}[(f(x_0) - \hat{f}(x_0))\epsilon_0] + \mathbb{E}[\epsilon_0^2]$$
+      
+      Como $\epsilon_0$ é independente do conjunto de treino $\mathcal{T}$ (e logo de $\hat{f}(x_0)$) e $\mathbb{E}[\epsilon_0] = 0$, o termo cruzado anula-se:
+      $$2\mathbb{E}[(f(x_0) - \hat{f}(x_0))]\mathbb{E}[\epsilon_0] = 0$$
+      
+      Além disso, $\mathbb{E}[\epsilon_0^2] = Var(\epsilon_0) = \sigma^2$. Para o primeiro termo, somamos e subtraímos $\mathbb{E}[\hat{f}(x_0)]$:
+      $$\mathbb{E}[(f(x_0) - \hat{f}(x_0))^2] = \mathbb{E}[((f(x_0) - \mathbb{E}[\hat{f}(x_0)]) + (\mathbb{E}[\hat{f}(x_0)] - \hat{f}(x_0)))^2]$$
+      $$\mathbb{E}[(f(x_0) - \hat{f}(x_0))^2] = (f(x_0) - \mathbb{E}[\hat{f}(x_0)])^2 + \mathbb{E}[(\mathbb{E}[\hat{f}(x_0)] - \hat{f}(x_0))^2]$$
+      $$\mathbb{E}[(f(x_0) - \hat{f}(x_0))^2] = (\mathbb{E}[\hat{f}(x_0)] - f(x_0))^2 + Var(\hat{f}(x_0))$$
+      
+      Juntando os termos, obtemos a decomposição Vício-Variância:
+      $$\mathbb{E}[(Y_0 - \hat{f}(x_0))^2] = \sigma^2 + (\mathbb{E}[\hat{f}(x_0)] - f(x_0))^2 + Var(\hat{f}(x_0))$$
+
+      Identificação dos termos:
+      <list marker="number">
+        <item>
+          $\sigma^2$: Erro Irredutível (ruído inerente ao processo gerador dos dados).
+        </item>
+        <item>
+         $(\mathbb{E}[\hat{f}(x_0)] - f(x_0))^2$: Vício ao quadrado (Viés$^2$), que mede o erro de aproximação do modelo.
+        </item>
+        <item>
+          $Var(\hat{f}(x_0))$: Variância da estimativa em relação às oscilações da amostra de treino.
+        </item>
+      </list>
+      </solution>
+    </subsection>
+
+    <subsection id="questao2:item_b"> 
+      <title>Item (b)</title>
+
+      <exercise id="ex2:item_b">
+        Seja $\mathcal{G}_{1}\subset\mathcal{G}_{2}\subset\cdot\cdot\cdot$ uma sequência encaixada de famílias de funções candidatas, cada vez mais flexíveis, e seja 
+        
+        $$\hat{f_{k}}=arg~min_{g\in\mathcal{G}_{k}}\frac{1}{n}\sum_{i=1}^{n}(y_{i}-g(x_{i}))^{2}.$$
+
+        Descreva como cada um dos três termos acima, e como as curvas de MSE de treino e de MSE de teste de $\hat{f_{k}}$, se comportam à medida que $k$ cresce.
+      </exercise>
+        
+      <solution of="ex2:item_b" collapsed="true">
+        À medida que $k$ cresce (famílias de funções mais flexíveis):
+        <list marker="number">
+          <item> 
+            Erro irredutível ($\sigma^2$): Permanece constante, pois é uma propriedade intrínseca dos dados.
+          </item>
+          <item> 
+            Vício ao quadrado (Viés$^2$): Decresce monotonicamente, pois modelos mais flexíveis conseguem aproximar melhor funções complexas $f(x)$.
+          </item>
+          <item> 
+            Variância ($Var(\hat{f})$): Aumenta, pois modelos mais flexíveis tornam-se extremamente sensíveis a flutuações e ruídos da amostra de treino.
+          </item>
+          <item> 
+            MSE de Treino: Decresce monotonicamente à medida que $k$ aumenta, tendendo a zero para modelos muito complexos.
+          </item>
+          <item> 
+            MSE de Teste: Apresenta uma curva em forma de "U". Inicialmente cai devido à redução do vício, atinge um ponto mínimo (complexidade ótima) e depois passa a subir acentuadamente devido ao aumento da variância (sobreajuste / overfitting).
+          </item>
+        </list>
+      </solution>
+    </subsection>
+  </section>
+
+</document>

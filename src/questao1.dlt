@@ -1,0 +1,123 @@
+<document lang="pt-BR" type="article" theme-accent="red">
+
+  <title>Questão 1</title>
+  
+  <floating>
+    <title>Navegação</title>
+    <toc scope="project" depth="1"/>
+  </floating>
+  
+  <meta>
+    <meta-item key="Autor"> Felipe Ribeiro Mendonça </meta-item>
+    <meta-item key="Instituição">IMPA Tech</meta-item>
+    <meta-item key="Período">2026.2</meta-item>
+  </meta>
+
+  <section id="sec:questao1">
+    <eyebrow> Prova AV1 - Machine Learning 1 </eyebrow>
+    <title>Questão 1</title>
+
+    <intro>
+    Considere o modelo $Y = X\beta + \epsilon$, com $\mathbb{E}[\epsilon] = 0$ e Var($\epsilon$) = $\sigma^{2} I$.
+    </intro>
+
+    <subsection id="questao1:item_a"> 
+      <title>Item (a)</title>
+
+      <exercise id="ex1:item_a">
+        Deduza a fórmula para o estimador $\widehat{\beta}_{OLS}$ em termos da matriz design $X$, quando essa tem posto máximo.
+      </exercise>
+       
+      <solution of="ex1:item_a" collapsed="true">
+        O estimador $\widehat{\beta}_{OLS}$ pode ser definido como $\beta$ tal que minimiza a soma dos quadrados dos resíduos (RSS).
+        Temos que: 
+        <definition id="RSS">
+          <title>RSS</title>
+          $$RSS (\beta_0, \beta_1, ..., \beta_p) = \sum_{i =1}^N (y_{i} - \beta_0 - \beta_1 x_1 - \cdot\cdot\cdot - \beta_p x_p)$$
+          $$\Rightarrow RSS(\beta) = (y - X\beta)^{T}(y - X\beta)$$
+        </definition>
+
+        Assim, expandindo a definição 1.1, temos que:
+        $$(y - X\beta)^{T}(y - X\beta) = (y^{T} - \beta^T X^T)(y - X\beta)$$ 
+        $$\Rightarrow (y - X\beta)^{T}(y - X\beta) = y^T y - y^{T}X\beta - \beta^T X^T y + \beta^T X^T X \beta$$
+
+        Como $y^{T}X\beta$ é um escalar, temos que seu transposto é igual a ele, logo:
+        $$(y - X\beta)^{T}(y - X\beta) = y^T y - 2 \beta^T X^T y + \beta^T X^T X \beta$$
+
+        Para minimizar, derivaremos em $\beta$ e igualaremos a $0$ e verificaremos se a hessiana é positiva definida.
+        $$\frac{\partial\big((y - X\beta)^{T}(y - X\beta)\big)}{\partial \beta} = \frac{\partial(y^T y - 2 \beta^T X^T y + \beta^T X^T X \beta)}{\partial \beta}$$
+        $$0 = -2 X^T y + 2\widehat{\beta} X^T X$$
+        $$\widehat{\beta} X^T X = X^T y$$
+
+        Por hipótese, $X$ tem posto máximo, logo $X^T X$ também possui, sendo invertível. Portanto:
+        $$\widehat{\beta} = (X^T X)^{-1} X^T y$$
+
+        Analisando a hessiana temos que:
+        $$ H = \frac{\partial^2\big((y - X\beta)^{T}(y - X\beta)\big)}{\partial \beta^2} = 2X^TX$$
+
+        H deve satisfazer $v^T H v \geq 0, v \in \mathbb{R}^{p+1}$. Vemos que de fato:
+        $$v^T H v = v^T (2X^T X) v = 2 (Xv)^T(Xv) = 2\lVert Xv\rVert \geq 0 $$
+
+        Então, concluímos que o $\beta$ que minimiza o RSS é:
+        $$\widehat{\beta}_{OLS} = (X^T X)^{-1} X^T y$$
+      </solution>
+    </subsection>
+
+     <subsection id="questao1:item_b"> 
+      <title>Item (b)</title>
+
+      <exercise id="ex1:item_b">
+        Mostre que trata-se de um estimador não viciado com variância $(X^{T}X)^{-1}\sigma^{2}$
+      </exercise>
+       
+      <solution of="ex1:item_b" collapsed="true">
+        Analisando a definição de estimador não viciado temos:
+        <definition>
+        <title>Estimador não viciado</title>
+        Um estimador é não viciado se sua esperança for igual ao verdadeiro parâmetro, ou seja: 
+        $$\mathbb{E}[\widehat{\beta}] = \beta$$ 
+        </definition>
+      
+        Tendo em vista a definição 1.2, substituiremos o modelo verdadeiro $Y = X\beta + \epsilon$ na fórmula do estimador encontrada no item anterior:
+        $$\widehat{\beta}_{OLS} = (X^TX)^{-1}X^T(X\beta + \epsilon)$$
+        $$\widehat{\beta}_{OLS} = (X^TX)^{-1}X^TX\beta + (X^TX)^{-1}X^T\epsilon$$
+        
+        Como $(X^TX)^{-1}(X^TX) = I$:
+        $$\widehat{\beta}_{OLS} = \beta + (X^TX)^{-1}X^T\epsilon$$
+        
+        Aplicando a esperança matemática (condicionada à matriz fixa $X$):
+        $$\mathbb{E}[\widehat{\beta}_{OLS}] = \mathbb{E}[\beta + (X^TX)^{-1}X^T\epsilon]$$
+        $$\mathbb{E}[\widehat{\beta}_{OLS}] = \beta + (X^TX)^{-1}X^T\mathbb{E}[\epsilon]$$
+        
+        Dado pelo enunciado que $\mathbb{E}[\epsilon] = 0$:
+        $$\mathbb{E}[\widehat{\beta}_{OLS}] = \beta + 0 = \beta$$
+        Logo, $\widehat{\beta}_{OLS}$ é um estimador não viciado.
+
+        Como vimos anteriormente,
+        $$\widehat{\beta}_{OLS} = \beta + (X^TX)^{-1}X^T\epsilon$$
+
+        Como $\beta$ é uma constante fixa a sua soma não altera a dispersão dos dados. Com isso:
+        $$Var(\widehat{\beta}_{OLS}) = Var((X^TX)^{-1}X^T\epsilon)$$
+
+        <definition>
+          Dado $Y$ uma variável aleátoria, temos que:
+          $$Var(AY) = A Var(Y) A^T$$
+        </definition>
+        
+        Pela definição 1.3, faremos:
+        $$Var(\widehat{\beta}_{OLS}) = (X^TX)^{-1}X^T Var(\epsilon)((X^TX)^{-1}X^T)^T$$
+
+        Por enunciado sabemos que $Var(\epsilon) = \sigma^{2}I$, então:
+        $$Var(\widehat{\beta}_{OLS}) = (X^TX)^{-1}X^T \sigma^{2}I (X((X^TX)^{-1})^T)$$
+
+        Como a matriz inversa $(X^TX)^{-1}$ é simétrica, a sua transposta é igual a ela mesma. Assim, a equação fica:
+        $$Var(\widehat{\beta}_{OLS}) = \sigma^2 (X^TX)^{-1} X^T X (X^TX)^{-1}$$
+        
+        Como $X^T X (X^TX)^{-1} = I$:
+        $$Var(\widehat{\beta}_{OLS}) = \sigma^2 (X^TX)^{-1} I$$
+        $$Var(\widehat{\beta}_{OLS}) = \sigma^2 (X^TX)^{-1}$$
+      </solution>
+    </subsection>
+  </section>
+
+</document>

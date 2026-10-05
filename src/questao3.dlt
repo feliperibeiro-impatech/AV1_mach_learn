@@ -1,0 +1,109 @@
+<document lang="pt-BR" type="article" theme-accent="red">
+
+  <title>Questão 3</title>
+
+  <floating>
+    <title>Navegação</title>
+    <toc scope="project" depth="1"/>
+  </floating>
+  
+  <meta>
+    <meta-item key="Autor"> Felipe Ribeiro Mendonça </meta-item>
+    <meta-item key="Instituição">IMPA Tech</meta-item>
+    <meta-item key="Período">2026.2</meta-item>
+  </meta>
+
+  <section id="sec:questao3">
+    <eyebrow> Prova AV1 - Machine Learning 1 </eyebrow>
+    <title>Questão 3</title>
+
+    <intro>
+    Considere o modelo $Y=X\beta+\epsilon$, com $X\in\mathbb{R}^{n\times p}$, $\mathbb{E}[\epsilon]=0$ e $Var(\epsilon)=\sigma^{2}I$. Suponha os dados centrados, de modo que não há intercepto.
+    </intro>
+
+    <subsection id="questao3:item_a"> 
+      <title>Item (a)</title>
+
+      <exercise id="ex3:item_a">
+        Escreva as funções objetivo (aquela que é minimizada) do Ridge e do Lasso.
+      </exercise>
+        
+      <solution of="ex3:item_a" collapsed="true">
+        Função objetivo do Ridge (Penalização L2):
+        $$L_{Ridge}(\beta) = \sum_{i=1}^n (y_i - x_i^T \beta)^2 + \lambda \sum_{j=1}^p \beta_j^2 = \Vert{}Y - X\beta\Vert{}_2^2 + \lambda \Vert{}\beta\Vert{}_2^2$$
+
+        Função objetivo do Lasso (Penalização L1):
+        $$L_{Lasso}(\beta) = \sum_{i=1}^n (y_i - x_i^T \beta)^2 + \lambda \sum_{j=1}^p \vert{}\beta_j\vert{} = \Vert{}Y - X\beta\Vert{}_2^2 + \lambda \Vert{}\beta\Vert{}_1$$
+      </solution>
+    </subsection>
+
+    <subsection id="questao3:item_b"> 
+      <title>Item (b)</title>
+
+      <exercise id="ex3:item_b">
+        O MQO é não viciado e o Ridge é viciado. Explique por que, ainda assim, o Ridge pode ter MSE de teste menor que o MQO.
+      </exercise>
+        
+      <solution of="ex3:item_b" collapsed="true">
+        Analisando a definição do risco esperado de previsão temos:
+        <definition>
+          O MSE$_{teste}$ esperado é:
+          $$MSE_{teste} = \mathbb{E}\big[\big(Y_0 - \hat{f}(x)\big)^{2}\big] = Viés^2 + Variância + Erro$$
+        </definition>
+        
+        Dessa forma, pela definição 3.1 vemos que embora o estimador de MQO não tenha vício (Viés $= 0$), ele pode sofrer de uma variância muito elevada, especialmente quando existe multicolinearidade entre as variáveis ou quando o número de preditores $p$ é grande em relação a $n$. 
+
+        Ao introduzir a penalização $\lambda > 0$, a regressão Ridge aceita uma pequena quantidade de vício em troca de uma grande redução na variância das estimativas. Quando o decréscimo da variância supera o aumento do vício ao quadrado, o MSE total de teste da regressão Ridge torna-se inferior ao do MQO.
+      </solution>
+    </subsection>
+
+    <subsection id="questao3:item_c"> 
+      <title>Item (c)</title>
+
+      <exercise id="ex3:item_c">
+        (*) Mostre que, para $\lambda>0$ e $\beta\ne0$ o Ridge é um estimador viciado de $\beta$.
+      </exercise>
+        
+      <solution of="ex3:item_c" collapsed="true">
+        Inicialmente, queremos encontrar o estimador $\beta_{Ridge}$ com isso, tendo em vista a equação do item (a), faremos:
+
+        $$L_{Ridge}(\beta) = \Vert{}Y - X\beta\Vert{}_2^2 + \lambda \Vert{}\beta\Vert{}_2^2 = (Y - X\beta)^T (Y - X\beta) + \lambda\beta^T\beta$$
+
+        Expandindo o primeiro termo da soma:
+        $$L_{Ridge}(\beta) = Y^TY - 2\beta^T X^T Y + \beta^T X^T X \beta + \lambda \beta^T \beta$$
+
+        Para encontrar o ponto de mínimo, calculamos o gradiente (derivada em relação a $\beta$) e igualamos a zero:
+        $$\frac{\partial L_{Ridge}}{\partial \beta} = -2X^TY + 2X^TX\beta + 2\lambda\beta = 0$$
+
+        Dividindo toda a equação por 2 e colocando $\beta$ em evidência:
+        $$-X^TY + (X^TX + \lambda I)\beta = 0$$
+        $$(X^TX + \lambda I)\beta = X^TY$$
+
+        Como para $\lambda > 0$ a matriz $(X^TX + \lambda I)$ é estritamente invertível (positiva definida), multiplicamos pela sua inversa à esquerda:
+        $$\widehat{\beta}_{Ridge} = (X^TX + \lambda I)^{-1}X^TY$$
+
+        Analisando a definição de estimador viciado temos:
+
+        <definition>
+        <title>Estimador viciado</title>
+        Um estimador é viciado se sua esperança for diferente do verdadeiro parâmetro, ou seja: 
+        $$\mathbb{E}[\widehat{\beta}] \neq \beta$$ 
+        </definition>
+
+        Tendo em vista a definição 3.2, substituindo $Y = X\beta + \epsilon$ na fórmula do estimador:
+        $$\widehat{\beta}_{Ridge} = (X^TX + \lambda I)^{-1}X^T(X\beta + \epsilon)$$
+        $$\widehat{\beta}_{Ridge} = (X^TX + \lambda I)^{-1}X^TX\beta + (X^TX + \lambda I)^{-1}X^T\epsilon$$
+
+        Calculando o valor esperado, sabemos por enunciado que $\mathbb{E}[\epsilon] = 0$, dessa forma:
+        $$\mathbb{E}[\widehat{\beta}_{Ridge}] = (X^TX + \lambda I)^{-1}X^TX\beta$$
+
+        Para $\lambda > 0$, a matriz $(X^TX + \lambda I)^{-1}X^TX \neq I$. 
+
+        Logo, com $\beta \neq 0$, temos que:
+        $$\mathbb{E}[\beta_{Ridge}] = (X^TX + \lambda I)^{-1}X^TX\beta \neq \beta$$
+        Portanto, o estimador Ridge é viciado.
+      </solution>
+    </subsection>
+  </section>
+
+</document>

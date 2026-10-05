@@ -1,0 +1,115 @@
+<document lang="pt-BR" type="article" theme-accent="red">
+  <title>Questão 4</title>
+  
+  <floating>
+    <title>Navegação</title>
+    <toc scope="project" depth="1"/>
+  </floating>
+  
+  <meta>
+    <meta-item key="Autor"> Felipe Ribeiro Mendonça </meta-item>
+    <meta-item key="Instituição">IMPA Tech</meta-item>
+    <meta-item key="Período">2026.2</meta-item>
+  </meta>
+
+  <section id="sec:questao4">
+    <eyebrow> Prova AV1 - Machine Learning 1 </eyebrow>
+    <title>Questão 4</title>
+
+    <intro>
+    Um cientista de dados ajusta uma regressão Ridge a um conjunto de treino com $n=100$ observações e $p=30$ variáveis previamente padronizadas. Para cada valor de $\lambda$, ele registra o MSE de treino e o MSE de validação obtido por validação cruzada 5-fold:
+
+    <table id="tbl:mse" max-height="250px">
+      <header>
+        <column width="2">$\lambda$</column>
+        <column>0</column>
+        <column> 0.01</column>
+        <column>0.1</column>
+        <column>1</column>
+        <column>10</column>
+        <column>100</column>
+      </header>
+      <row>
+        <column>MSE de treino</column>
+        <column>4.62</column>
+        <column>4.62</column>
+        <column>4.62</column>
+        <column>4.66</column>
+        <column>6.51</column>
+        <column>23.64</column>
+      </row>
+
+      <row>
+        <column>MSE de validação</column>
+        <column>13.43</column>
+        <column>13.42</column>
+        <column>13.36</column>
+        <column>12.89</column>
+        <column>14.78</column>
+        <column>31.81</column>
+      </row>
+      
+    </table>
+    </intro>
+
+    <subsection id="questao4:item_a"> 
+      <title>Item (a)</title>
+
+      <exercise id="ex4:item_a">
+        Qual valor de $\lambda$ você escolheria e por quê?
+      </exercise>
+        
+      <solution of="ex4:item_a" collapsed="true">
+        Escolheria $\lambda = 1$.
+
+        Pois, é o valor que atinge o menor MSE de validação ($12,89$) através de validação cruzada 5-fold, indicando que é o $\lambda$ que melhor generaliza, oferecendo um bom equilíbrio entre vício e variância para prever novos dados.
+      </solution>
+    </subsection>
+
+    <subsection id="questao4:item_b"> 
+      <title>Item (b)</title>
+
+      <exercise id="ex4:item_b">
+        Explique, a partir da definição do Ridge, por que a linha do MSE de treino é não decrescente em $\lambda$. O que representa a coluna $\lambda=0$?
+      </exercise>
+        
+      <solution of="ex4:item_b" collapsed="true">
+        O problema do Ridge minimiza $RSS(\beta) + \lambda \Vert{}\beta\Vert{}_2^2$. 
+        
+        À medida que $\lambda$ aumenta, a penalidade sobre os parâmetros fica maior, o que reduz o espaço de busca efetivo dos coeficientes $\beta$. Como o ajuste minimiza os erros de treino sob restrições cada vez maiores, o erro no treino não pode diminuir, sendo obrigatoriamente não decrescente em relação a $\lambda$.
+
+        A coluna $\lambda = 0$ representa a regressão de Mínimos Quadrados Ordinários (MQO / OLS) convencional e puro, sem qualquer penalização.
+    
+      </solution>
+    </subsection>
+
+    <subsection id="questao4:item_c"> 
+      <title>Item (c)</title>
+
+      <exercise id="ex4:item_c">
+        (*) Escolhido $\lambda$, o cientista reporta o MSE de validação correspondente como sua estimativa do erro de generalização do modelo final. Isso é adequado?
+      </exercise>
+        
+      <solution of="ex4:item_c" collapsed="true">
+        Não é adequado. Pois, como o valor de $\lambda = 1$ foi escolhido explicitamente por ter minimizado o erro no conjunto de validação, esse valor de MSE $= 12.89$ está enviesado para baixo. 
+        
+        Para estimar corretamente o erro de generalização do modelo final, deveria ser utilizado um conjunto de teste independente (nunca visto no ajuste nem na escolha de hiperparâmetros).
+      </solution>
+    </subsection>
+
+    <subsection id="questao4:item_d"> 
+      <title>Item (d)</title>
+
+      <exercise id="ex4:item_d">
+        Por que as variáveis foram padronizadas antes de ajustar o Ridge? O que poderia acontecer se não fossem?
+      </exercise>
+        
+      <solution of="ex4:item_d" collapsed="true">
+        As variáveis foram padronizadas para que todas fiquem na mesma escala.
+
+        A penalidade Ridge ($\lambda \Vert \beta \Vert$) aplica o mesmo peso penalizador a todos os coeficientes. Caso as variáveis não tivessem sido padronizadas, preditores com escalas numéricas muito grandes sofreriam pouca penalização, enquanto variáveis com escalas pequenas sofreriam uma penalização desproporcionalmente grande. Dessa forma, a padronização garante que a penalidade seja justa e independente das unidades de medida.
+      </solution>
+    </subsection>
+  </section>
+
+</document>

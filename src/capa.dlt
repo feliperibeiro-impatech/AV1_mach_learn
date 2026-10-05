@@ -1,0 +1,26 @@
+<document lang="pt-BR" type="article" theme-accent="red">
+
+  <title> Prova AV1 - Machine Learning 1 </title>
+  <floating>
+    <title>Navegação</title>
+    <toc scope="project" depth="1"/>
+  </floating>
+
+  <meta>
+    <meta-item key="Autor"> Felipe Ribeiro Mendonça </meta-item>
+    <meta-item key="Instituição">IMPA Tech</meta-item>
+    <meta-item key="Período">2026.2</meta-item>
+  </meta>
+
+  <section numbered="false">
+    
+    <title>Introdução</title>
+    <intro>
+        Este documento apresenta a resolução da primeira avaliação (AV1) da disciplina de Machine Learning 1, realizada no IMPA Tech em 21 de setembro de 2026.
+
+        O objetivo deste documento é apresentar, de forma organizada e detalhada, a resolução das questões propostas na avaliação, incluindo os cálculos, argumentos e justificativas necessários para a compreensão de cada resposta.
+
+        As soluções são apresentadas seguindo a ordem das questões da prova, buscando explicitar as etapas do raciocínio e os conceitos de aprendizado de máquina utilizados em cada problema.
+    </intro>
+  </section>
+</document>
